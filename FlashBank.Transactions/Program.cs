@@ -1,11 +1,9 @@
 using Amazon.SimpleNotificationService;
 using Amazon.SQS;
-using FlashBank.Shared.Enums;
-using FlashBank.Shared.Events;
 using FlashBank.Transactions.Consumers;
 using FlashBank.Transactions.Data;
 using FlashBank.Transactions.DTOs;
-using FlashBank.Transactions.Entities;
+using FlashBank.Transactions.Services;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +15,9 @@ builder.Services.AddSwaggerGen();
 // EF Core — PostgreSQL (flashbank_transactions)
 builder.Services.AddDbContext<TransactionDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("TransactionsDb")));
+
+// Servicios de negocio
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 // MassTransit — Amazon SQS con LocalStack
 var awsSection = builder.Configuration.GetSection("AWS");
@@ -54,12 +55,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // POST /transactions
-// Acción 1: Inserta en BD con Status=Pending
-// Acción 2: Publica TransactionCreated hacia el primer SQS
 app.MapPost("/transactions", async (
     CreateTransactionRequest request,
-    TransactionDbContext db,
-    IBus bus,
+    ITransactionService transactionService,
     CancellationToken ct) =>
 {
     if (request.Amount <= 0)
@@ -68,27 +66,7 @@ app.MapPost("/transactions", async (
     if (request.AccountId == Guid.Empty)
         return Results.BadRequest(new { error = "AccountId inválido." });
 
-    var transaction = new Transaction
-    {
-        Id        = Guid.NewGuid(),
-        AccountId = request.AccountId,
-        Amount    = request.Amount,
-        Type      = request.Type,
-        Status    = TransactionStatus.Pending,
-        CreatedAt = DateTime.UtcNow
-    };
-
-    db.Transactions.Add(transaction);
-    await db.SaveChangesAsync(ct);
-
-    var evt = new TransactionCreated(
-        transaction.Id,
-        transaction.AccountId,
-        transaction.Amount,
-        transaction.Type,
-        transaction.CreatedAt);
-
-    await bus.Publish(evt, ct);
+    var transaction = await transactionService.CreateAsync(request, ct);
 
     return Results.Created($"/transactions/{transaction.Id}", new
     {
