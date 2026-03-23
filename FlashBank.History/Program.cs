@@ -1,6 +1,7 @@
 using Amazon.SimpleNotificationService;
 using Amazon.SQS;
 using FlashBank.History.Consumers;
+using FlashBank.Shared.Events;
 using MassTransit;
 
 var builder = Host.CreateApplicationBuilder(args);
@@ -24,6 +25,8 @@ builder.Services.AddMassTransit(x =>
             h.Config(new AmazonSQSConfig { ServiceURL = serviceUrl });
             h.Config(new AmazonSimpleNotificationServiceConfig { ServiceURL = serviceUrl });
         });
+
+        cfg.Message<TransactionCreated>(x => x.SetEntityName("transaction-created"));
 
         cfg.ConfigureEndpoints(ctx);
     });

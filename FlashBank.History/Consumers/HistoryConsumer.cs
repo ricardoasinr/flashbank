@@ -3,6 +3,11 @@ using MassTransit;
 
 namespace FlashBank.History.Consumers;
 
+/// <summary>
+/// El historial se registra desde FlashBank.Transactions (TransactionService.UpdateStatusAsync)
+/// una vez que el status es definitivo (Completed o Failed).
+/// Este consumer ya no escribe en MongoDB para evitar registros duplicados con Status=Pending.
+/// </summary>
 public class HistoryConsumer : IConsumer<TransactionCreated>
 {
     private readonly ILogger<HistoryConsumer> _logger;
@@ -14,14 +19,9 @@ public class HistoryConsumer : IConsumer<TransactionCreated>
 
     public Task Consume(ConsumeContext<TransactionCreated> context)
     {
-        var msg = context.Message;
-
-        _logger.LogInformation(
-            "[HistoryConsumer] TransactionCreated recibido → TransactionId: {TransactionId} | AccountId: {AccountId} | Amount: {Amount} | Type: {Type} | CreatedAt: {CreatedAt}",
-            msg.TransactionId, msg.AccountId, msg.Amount, msg.Type, msg.CreatedAt);
-
-        // TODO: implementar inserción de documento en MongoDB (mongodb-history)
-        // Colección: history → documento con todos los campos del evento
+        _logger.LogDebug(
+            "[HistoryConsumer] TransactionCreated recibido (sin acción — historial gestionado por TransactionService) → TransactionId: {TransactionId}",
+            context.Message.TransactionId);
 
         return Task.CompletedTask;
     }

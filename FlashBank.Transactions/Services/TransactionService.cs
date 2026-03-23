@@ -1,8 +1,10 @@
 using FlashBank.Shared.Enums;
 using FlashBank.Shared.Events;
 using FlashBank.Transactions.Data;
+using FlashBank.Transactions.Documents;
 using FlashBank.Transactions.DTOs;
 using FlashBank.Transactions.Entities;
+using FlashBank.Transactions.Repositories;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,16 +14,18 @@ public class TransactionService : ITransactionService
 {
     private readonly TransactionDbContext _db;
     private readonly IBus _bus;
+    private readonly IHistoryRepository _history;
     private readonly ILogger<TransactionService> _logger;
 
-    public TransactionService(TransactionDbContext db, IBus bus, ILogger<TransactionService> logger)
+    public TransactionService(TransactionDbContext db, IBus bus, IHistoryRepository history, ILogger<TransactionService> logger)
     {
-        _db     = db;
-        _bus    = bus;
-        _logger = logger;
+        _db      = db;
+        _bus     = bus;
+        _history = history;
+        _logger  = logger;
     }
 
-    public async Task<Transaction> CreateAsync(CreateTransactionRequest request, CancellationToken ct = default)
+    public async Task<TransactionResponse> CreateAsync(CreateTransactionRequest request, CancellationToken ct = default)
     {
         var transaction = new Transaction
         {
@@ -53,7 +57,7 @@ public class TransactionService : ITransactionService
             "[TransactionService] Evento TransactionCreated publicado → TransactionId: {Id}",
             transaction.Id);
 
-        return transaction;
+        return ToResponse(transaction);
     }
 
     public async Task UpdateStatusAsync(Guid transactionId, TransactionStatus newStatus, CancellationToken ct = default)
@@ -75,5 +79,24 @@ public class TransactionService : ITransactionService
         _logger.LogInformation(
             "[TransactionService] Status actualizado → TransactionId: {TransactionId} | Status: {Status}",
             transaction.Id, transaction.Status);
+
+        var historyDoc = new TransactionHistoryDocument
+        {
+            TransactionId = transaction.Id,
+            AccountId     = transaction.AccountId,
+            Amount        = transaction.Amount,
+            Type          = transaction.Type.ToString(),
+            Status        = transaction.Status.ToString(),
+            OccurredAt    = DateTime.UtcNow
+        };
+
+        await _history.InsertAsync(historyDoc, ct);
+
+        _logger.LogInformation(
+            "[TransactionService] Historial registrado → TransactionId: {TransactionId} | Status: {Status}",
+            transaction.Id, transaction.Status);
     }
+
+    private static TransactionResponse ToResponse(Transaction t) =>
+        new(t.Id, t.AccountId, t.Amount, t.Type, t.Status, t.CreatedAt);
 }

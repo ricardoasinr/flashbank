@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FlashBank.History")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ccb1de949b9e18f039974402c9e67696823d4b0f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5447ebc4864b6062659846767abc0990497f8236")]
 [assembly: System.Reflection.AssemblyProductAttribute("FlashBank.History")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FlashBank.History")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

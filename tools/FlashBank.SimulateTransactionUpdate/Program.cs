@@ -58,6 +58,8 @@ builder.Services.AddMassTransit(x =>
             h.Config(new AmazonSQSConfig { ServiceURL = serviceUrl });
             h.Config(new AmazonSimpleNotificationServiceConfig { ServiceURL = serviceUrl });
         });
+
+        cfg.Message<TransactionUpdate>(x => x.SetEntityName("transaction-update"));
     });
 });
 

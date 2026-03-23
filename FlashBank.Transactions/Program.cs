@@ -1,25 +1,36 @@
 using Amazon.SimpleNotificationService;
 using Amazon.SQS;
+using FlashBank.Shared.Events;
 using FlashBank.Transactions.Consumers;
 using FlashBank.Transactions.Data;
-using FlashBank.Transactions.DTOs;
+using FlashBank.Transactions.Extensions;
+using FlashBank.Transactions.Repositories;
 using FlashBank.Transactions.Services;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// EF Core — PostgreSQL (flashbank_transactions)
 builder.Services.AddDbContext<TransactionDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("TransactionsDb")));
 
-// Servicios de negocio
+var mongoSection      = builder.Configuration.GetSection("MongoDB");
+var mongoConnectionStr = mongoSection["ConnectionString"] ?? throw new InvalidOperationException("MongoDB:ConnectionString no configurado.");
+var mongoDatabaseName = mongoSection["Database"] ?? "mongodb-history";
+
+var mongoClient   = new MongoClient(mongoConnectionStr);
+var mongoDatabase = mongoClient.GetDatabase(mongoDatabaseName);
+
+builder.Services.AddSingleton<IMongoClient>(mongoClient);
+builder.Services.AddSingleton(mongoDatabase);
+builder.Services.AddSingleton<IHistoryRepository, HistoryRepository>();
+
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 
-// MassTransit — Amazon SQS con LocalStack
 var awsSection = builder.Configuration.GetSection("AWS");
 var serviceUrl = awsSection["ServiceURL"] ?? "http://localhost:4566";
 var accessKey  = awsSection["AccessKey"]  ?? "test";
@@ -40,7 +51,13 @@ builder.Services.AddMassTransit(x =>
             h.Config(new AmazonSimpleNotificationServiceConfig { ServiceURL = serviceUrl });
         });
 
-        cfg.ConfigureEndpoints(ctx);
+        cfg.Message<TransactionCreated>(x => x.SetEntityName("transaction-created"));
+        cfg.Message<TransactionUpdate>(x => x.SetEntityName("transaction-update"));
+
+        cfg.ReceiveEndpoint("transaction-update-queue", e =>
+        {
+            e.ConfigureConsumer<TransactionConsumer>(ctx);
+        });
     });
 });
 
@@ -53,38 +70,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-static async Task<IResult> CreateTransactionHandler(
-    CreateTransactionRequest request,
-    ITransactionService transactionService,
-    CancellationToken ct)
-{
-    if (request.Amount <= 0)
-        return Results.BadRequest(new { error = "El monto debe ser mayor que cero." });
-
-    if (request.AccountId == Guid.Empty)
-        return Results.BadRequest(new { error = "AccountId inválido." });
-
-    var transaction = await transactionService.CreateAsync(request, ct);
-
-    return Results.Created($"/transactions/{transaction.Id}", new
-    {
-        transaction.Id,
-        transaction.AccountId,
-        transaction.Amount,
-        transaction.Type,
-        transaction.Status,
-        transaction.CreatedAt
-    });
-}
-
-// Diagrama: POST /transaction — mismo handler que /transactions
-app.MapPost("/transaction", CreateTransactionHandler)
-    .WithName("CreateTransactionSingular")
-    .WithOpenApi();
-
-app.MapPost("/transactions", CreateTransactionHandler)
-    .WithName("CreateTransaction")
-    .WithOpenApi();
-
+app.MapTransactionEndpoints();
 app.Run();

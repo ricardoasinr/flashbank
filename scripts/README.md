@@ -3,9 +3,8 @@
 | Script | Uso |
 |--------|-----|
 | `list-sqs-queues.sh` | Listar nombres/URLs de colas en LocalStack |
-| `sqs-show-messages.sh` | **Ver mensajes** de una cola o de **todas** (`--all`), JSON formateado |
+| `sqs-show-messages.sh` | **Ver mensajes** de una cola o de **todas** (`--all`), solo el payload JSON |
 | `sqs-watch-messages.sh` | Bucle: ir mostrando mensajes de una cola (long polling) |
-| `peek-sqs-queue.sh` | Igual que `sqs-show-messages.sh` (alias) |
 | `send-transaction-update.sh` | Simular `TransactionUpdate` vía MassTransit |
 
 Ejecutar **desde la raíz del repositorio** `flashbank/`:
@@ -30,6 +29,6 @@ chmod +x scripts/*.sh   # solo la primera vez
 
 **Borrar tras leer** (limpieza): `./scripts/sqs-show-messages.sh mi-cola --delete` (cuidado en entornos compartidos).
 
-Variables opcionales: `LOCALSTACK_ENDPOINT`, `SQS_WAIT_SECONDS`, `SQS_PEEK_VISIBILITY`, `SQS_MAX_MESSAGES`.
+Variables opcionales: `LOCALSTACK_ENDPOINT`, `SQS_WAIT_SECONDS`, `SQS_VISIBILITY_TIMEOUT`, `SQS_MAX_MESSAGES`.
 
 La guía EDA está en [docs/testing/pruebas-eda.md](../docs/testing/pruebas-eda.md).

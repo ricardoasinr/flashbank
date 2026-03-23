@@ -1,44 +1,32 @@
-# Ver mensajes SQS solo con Docker (sin apps ni scripts en el Mac)
+# Ver mensajes SQS con Docker (LocalStack)
 
-## Dos contenedores (una cola cada uno), dependen de LocalStack
+Las colas viven en **LocalStack**. Para inspeccionarlas puedes usar **`awslocal`** dentro del contenedor o el script en el host **`scripts/sqs-show-messages.sh`** (recomendado: formatea el JSON y desenve SNS → MassTransit).
 
-Las colas **siguen almacenadas en LocalStack** (no hay dos emuladores SQS). Lo que se “divide” son **dos procesos** en la red Docker: cada uno hace `receive-message` solo contra **una** cola y escribe el JSON en **stdout**.
+## Desde tu máquina (recomendado)
+
+Con LocalStack en `http://localhost:4566`:
 
 ```bash
-docker compose --profile sqs-peek up -d
-docker compose logs -f sqs-peek-transaction-created
-# otra terminal:
-docker compose logs -f sqs-peek-transaction-processed
+export LOCALSTACK_ENDPOINT=http://localhost:4566
+export AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_DEFAULT_REGION=us-east-1
+./scripts/sqs-show-messages.sh transaction-created-queue
+./scripts/sqs-show-messages.sh transaction-processed-queue
+./scripts/sqs-show-messages.sh --all
 ```
 
-Perfil **`sqs-peek`**: estos servicios **no** arrancan con un `up` normal, para que no compitan con tus consumers .NET todo el tiempo.
-
-Si MassTransit usa otros nombres de cola, en `.env`:
-
-```env
-SQS_PEEK_QUEUE_CREATED=nombre-cola-1
-SQS_PEEK_QUEUE_PROCESSED=nombre-cola-2
-```
-
-**Ojo:** mientras corren, también **leen** la cola (como cualquier consumer). Para ver mensajes “enteros”, para temporalmente **FlashBank.Transactions**, **Accounts.Worker** e **History**, o acepta que a veces otro proceso se los lleve antes.
+Opciones útiles: `--delete` (borra tras leer), variables `SQS_WAIT_SECONDS`, `SQS_VISIBILITY_TIMEOUT`, `SQS_MAX_MESSAGES`. Detalle en `scripts/README.md`.
 
 ---
 
 ## Comandos manuales dentro de LocalStack (`awslocal`)
 
-Usa el contenedor **LocalStack** que ya tienes: dentro viene **`awslocal`**. Todo con `docker compose` desde la carpeta del repo.
-
-## 1. Listar colas
+### Listar colas
 
 ```bash
 docker compose exec localstack awslocal sqs list-queues --region us-east-1
 ```
 
-Ahí ves los nombres exactos (las colas del `init-aws.sh` suelen ser `transaction-created-queue` y `transaction-processed-queue`; MassTransit puede crear **otras** adicionales).
-
-## 2. Ver mensajes en la cola “transaction-created” (primera)
-
-Un solo `exec` (resuelve la URL y hace `receive-message`):
+### `receive-message` (JSON crudo de AWS)
 
 ```bash
 docker compose exec localstack sh -c '
@@ -48,26 +36,11 @@ docker compose exec localstack sh -c '
 '
 ```
 
-## 3. Ver mensajes en la cola “transaction-processed” (segunda)
+Sustituye el nombre de cola si MassTransit creó otras (copia el nombre de `list-queues`).
 
-```bash
-docker compose exec localstack sh -c '
-  Q=$(awslocal sqs get-queue-url --queue-name transaction-processed-queue --region us-east-1 --query QueueUrl --output text)
-  awslocal sqs receive-message --region us-east-1 --queue-url "$Q" \
-    --max-number-of-messages 10 --wait-time-seconds 5 --attribute-names All
-'
-```
-
-El JSON que imprime AWS CLI es el mensaje tal cual está en SQS (a veces con envoltorio SNS si MassTransit lo usa).
+---
 
 ## Notas
 
-- **`receive-message`** hace que el mensaje sea invisible unos segundos (visibility timeout por defecto); si no lo borras, vuelve a la cola. No estás “perdiendo” el mensaje para siempre salvo que un consumer lo elimine.
-- Si la cola sale **vacía**, puede que un servicio .NET ya haya consumido el mensaje. Haz el `POST` y enseguida vuelve a ejecutar el comando, o para temporalmente **Accounts.Worker** / **History** / **Transactions**.
-- Si el nombre de la cola es otro (MassTransit), copia el nombre de `list-queues` y sustituye `transaction-created-queue` o `transaction-processed-queue` en los comandos.
-
-## Resumen
-
-- **Dos colas** = dos recursos SQS en el **mismo** LocalStack.
-- **Dos contenedores `sqs-peek-*`** = dos clientes AWS CLI que miran una cola cada uno (perfil `sqs-peek`).
-- **`docker compose exec localstack awslocal ...`** = inspección puntual sin levantar los peek.
+- **`receive-message`** oculta el mensaje un tiempo (visibility timeout); si no haces `delete-message`, vuelve a la cola.
+- Si la cola sale vacía, otro servicio puede haber consumido el mensaje; ejecuta el flujo (p. ej. POST) y vuelve a intentar, o para temporalmente los workers.
