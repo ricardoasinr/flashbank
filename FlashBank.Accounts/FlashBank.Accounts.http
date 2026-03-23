@@ -1,0 +1,6 @@
+@FlashBank.Accounts_HostAddress = http://localhost:5232
+
+GET {{FlashBank.Accounts_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

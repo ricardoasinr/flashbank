@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "dgSpecHash": "Gurxmk+S+M59KkeAlJ72xB6UmaQGqj2A6BxiD3hhQF9/wYTA7tvA74ZKpbZrLiAq3na7mD5+C/yCuFPbmu0+2w==",
+  "success": true,
+  "projectFilePath": "/Users/ricardoasin/Development/bancosol/flashbank/flashbank/FlashBank.Transactions/FlashBank.Transactions.csproj",
+  "expectedPackageFiles": [
+    "/Users/ricardoasin/.nuget/packages/awssdk.core/4.0.3.6/awssdk.core.4.0.3.6.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/awssdk.simplenotificationservice/4.0.2.11/awssdk.simplenotificationservice.4.0.2.11.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/awssdk.sqs/4.0.2.9/awssdk.sqs.4.0.2.9.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/masstransit/9.0.1/masstransit.9.0.1.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/masstransit.abstractions/9.0.1/masstransit.abstractions.9.0.1.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/masstransit.amazonsqs/9.0.1/masstransit.amazonsqs.9.0.1.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.aspnetcore.openapi/8.0.7/microsoft.aspnetcore.openapi.8.0.7.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.extensions.configuration.abstractions/8.0.0/microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.extensions.diagnostics.abstractions/8.0.0/microsoft.extensions.diagnostics.abstractions.8.0.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.extensions.diagnostics.healthchecks/8.0.0/microsoft.extensions.diagnostics.healthchecks.8.0.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.extensions.diagnostics.healthchecks.abstractions/8.0.0/microsoft.extensions.diagnostics.healthchecks.abstractions.8.0.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.extensions.fileproviders.abstractions/8.0.0/microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.extensions.hosting.abstractions/8.0.0/microsoft.extensions.hosting.abstractions.8.0.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.extensions.options/8.0.0/microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.4.0/swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.4.0/swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512",
+    "/Users/ricardoasin/.nuget/packages/system.diagnostics.diagnosticsource/8.0.0/system.diagnostics.diagnosticsource.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

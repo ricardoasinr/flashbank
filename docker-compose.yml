@@ -1,0 +1,141 @@
+services:
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL - Transactions Service (CQRS Write Side)
+  # Postgres 18+ (imagen :latest): el volumen debe montarse en /var/lib/postgresql
+  # (no en .../data). Ver docker-library/postgres#1259.
+  # Si venías de un volumen antiguo montado en .../data, bórralo y recrea:
+  #   docker compose down && docker volume rm flashbank-pg-transactions-data flashbank-pg-accounts-data
+  # ---------------------------------------------------------------------------
+  postgres-transactions:
+    image: postgres:latest
+    container_name: postgres-transactions
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_TX_DB}
+      POSTGRES_USER: ${POSTGRES_TX_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_TX_PASSWORD}
+    volumes:
+      - pg-transactions-data:/var/lib/postgresql
+      - ./init/init-transactions.sql:/docker-entrypoint-initdb.d/init-transactions.sql:ro
+    networks:
+      - bank-network
+    healthcheck:
+      # Usa variables del contenedor ($$ -> $) para evitar fallos si el .env trunca valores con # o $
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL - Accounts Service (CQRS Write Side)
+  # ---------------------------------------------------------------------------
+  postgres-accounts:
+    image: postgres:latest
+    container_name: postgres-accounts
+    restart: unless-stopped
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_ACC_DB}
+      POSTGRES_USER: ${POSTGRES_ACC_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_ACC_PASSWORD}
+    volumes:
+      - pg-accounts-data:/var/lib/postgresql
+      - ./init/init-accounts.sql:/docker-entrypoint-initdb.d/init-accounts.sql:ro
+    networks:
+      - bank-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ---------------------------------------------------------------------------
+  # MongoDB - History Read Model (CQRS Read Side)
+  # BD inicial creada al primer arranque: mongodb-history (MONGO_INITDB_DATABASE)
+  # El usuario root solo se crea si /data/db está vacío la primera vez.
+  # Si Compass da "Authentication failed": borra volumen flashbank-mongo-data y
+  # vuelve a levantar (ver comentarios en .env).
+  # Puerto en el HOST: 27018 (evita choque con MongoDB instalado en macOS en :27017).
+  # Desde otros contenedores sigue siendo mongodb:27017 en la red bank-network.
+  # ---------------------------------------------------------------------------
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - "${MONGO_HOST_PORT:-27018}:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:?set MONGO_INITDB_ROOT_USERNAME in .env}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:?set MONGO_INITDB_ROOT_PASSWORD in .env}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE:-mongodb-history}
+    volumes:
+      - mongo-data:/data/db
+      - ./init/init-mongo-seed.js:/docker-entrypoint-initdb.d/init-mongo-seed.js:ro
+    networks:
+      - bank-network
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'mongosh --quiet -u "$$MONGO_INITDB_ROOT_USERNAME" -p "$$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase admin --eval "db.adminCommand({ ping: 1 })" | grep -q 1',
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # ---------------------------------------------------------------------------
+  # LocalStack - AWS SQS/SNS Emulator
+  # ---------------------------------------------------------------------------
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    restart: unless-stopped
+    ports:
+      - "4566:4566"
+    environment:
+      SERVICES: sqs,sns
+      DEFAULT_REGION: us-east-1
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      LOCALSTACK_HOST: localstack
+    volumes:
+      - localstack-data:/var/lib/localstack
+      - ./init/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - bank-network
+    healthcheck:
+      test: ["CMD-SHELL", "awslocal sqs list-queues --region us-east-1 || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+# -----------------------------------------------------------------------------
+# Volumes
+# -----------------------------------------------------------------------------
+volumes:
+  pg-transactions-data:
+    name: flashbank-pg-transactions-data
+  pg-accounts-data:
+    name: flashbank-pg-accounts-data
+  mongo-data:
+    name: flashbank-mongo-data
+  localstack-data:
+    name: flashbank-localstack-data
+
+# -----------------------------------------------------------------------------
+# Networks
+# -----------------------------------------------------------------------------
+networks:
+  bank-network:
+    name: bank-network
+    driver: bridge
