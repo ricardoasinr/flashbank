@@ -71,7 +71,13 @@ Enums en JSON como **número**: `0` = Deposit, `1` = Withdrawal.
 
 ---
 
-## 2) Ver colas y mensajes (terminal)
+## 2) Ver colas y mensajes **solo con Docker** (sin app)
+
+Si no quieres scripts en el host: [sqs-desde-docker.md](./sqs-desde-docker.md) (`docker compose exec localstack awslocal ...`).
+
+---
+
+## 2b) Ver colas y mensajes (scripts en el Mac)
 
 ```bash
 ./scripts/list-sqs-queues.sh
