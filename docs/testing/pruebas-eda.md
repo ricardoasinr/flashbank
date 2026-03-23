@@ -75,10 +75,14 @@ Enums en JSON como **número**: `0` = Deposit, `1` = Withdrawal.
 
 ```bash
 ./scripts/list-sqs-queues.sh
-./scripts/peek-sqs-queue.sh <nombre-de-cola>
+./scripts/sqs-show-messages.sh --all          # todas las colas, JSON legible
+./scripts/sqs-show-messages.sh <nombre-cola>  # una cola
+./scripts/sqs-watch-messages.sh <nombre-cola> # bucle (ver llegadas en vivo)
 ```
 
-MassTransit puede crear **nombres distintos** a `transaction-created-queue` del `init-aws.sh`. Lista las colas **después** de arrancar los servicios .NET.
+Requiere **`jq`** (`brew install jq`) y AWS CLI. Si una cola sale vacía, puede que un consumer .NET ya haya consumido el mensaje; para verlo, ejecuta el script justo después del `POST` o detén temporalmente el worker.
+
+MassTransit puede crear **nombres distintos** a `transaction-created-queue` del `init-aws.sh`. Usa `list-sqs-queues` y luego `sqs-show-messages` con el nombre exacto.
 
 ---
 

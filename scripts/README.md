@@ -2,17 +2,34 @@
 
 | Script | Uso |
 |--------|-----|
-| `list-sqs-queues.sh` | Ver colas en LocalStack (`http://localhost:4566`) |
-| `peek-sqs-queue.sh` | Inspeccionar mensajes de una cola por nombre |
-| `send-transaction-update.sh` | Simular `TransactionUpdate` (MassTransit → segundo paso EDA) |
+| `list-sqs-queues.sh` | Listar nombres/URLs de colas en LocalStack |
+| `sqs-show-messages.sh` | **Ver mensajes** de una cola o de **todas** (`--all`), JSON formateado |
+| `sqs-watch-messages.sh` | Bucle: ir mostrando mensajes de una cola (long polling) |
+| `peek-sqs-queue.sh` | Igual que `sqs-show-messages.sh` (alias) |
+| `send-transaction-update.sh` | Simular `TransactionUpdate` vía MassTransit |
 
 Ejecutar **desde la raíz del repositorio** `flashbank/`:
 
 ```bash
 chmod +x scripts/*.sh   # solo la primera vez
 ./scripts/list-sqs-queues.sh
-./scripts/peek-sqs-queue.sh nombre-de-cola
-./scripts/send-transaction-update.sh "<TransactionId>" "<AccountId>" Completed
+./scripts/sqs-show-messages.sh --all
+./scripts/sqs-show-messages.sh nombre-de-cola
+./scripts/sqs-watch-messages.sh nombre-de-cola
 ```
 
-La guía paso a paso está en [docs/testing/pruebas-eda.md](../docs/testing/pruebas-eda.md).
+### Ver mensajes en las colas
+
+1. **Listar colas:** `./scripts/list-sqs-queues.sh`
+2. **Inspeccionar todas** (una recepción por cola): `./scripts/sqs-show-messages.sh --all`
+3. **Una cola concreta** (p. ej. la que crea MassTransit): `./scripts/sqs-show-messages.sh transaction-created-queue`
+
+**Requisito:** `jq` (`brew install jq`). AWS CLI + credenciales `test`/`test` (como LocalStack).
+
+**Nota:** Los consumers de .NET también leen la cola; si ves “sin mensajes”, puede que ya los hayan consumido. Haz el POST **antes** de ejecutar el script, o para pruebas para el servicio consumer un momento.
+
+**Borrar tras leer** (limpieza): `./scripts/sqs-show-messages.sh mi-cola --delete` (cuidado en entornos compartidos).
+
+Variables opcionales: `LOCALSTACK_ENDPOINT`, `SQS_WAIT_SECONDS`, `SQS_PEEK_VISIBILITY`, `SQS_MAX_MESSAGES`.
+
+La guía EDA está en [docs/testing/pruebas-eda.md](../docs/testing/pruebas-eda.md).
