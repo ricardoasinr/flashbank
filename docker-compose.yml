@@ -131,7 +131,8 @@ services:
   # ---------------------------------------------------------------------------
   sqs-peek-transaction-created:
     profiles: ["sqs-peek"]
-    image: amazon/aws-cli:2
+    # Tag "2" no existe en Docker Hub; usar latest o versión explícita (ej. 2.22.35)
+    image: amazon/aws-cli:latest
     container_name: sqs-peek-transaction-created
     depends_on:
       localstack:
@@ -160,7 +161,7 @@ services:
 
   sqs-peek-transaction-processed:
     profiles: ["sqs-peek"]
-    image: amazon/aws-cli:2
+    image: amazon/aws-cli:latest
     container_name: sqs-peek-transaction-processed
     depends_on:
       localstack:
