@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net8.0": {
-      "AWSSDK.Core/4.0.3.6": {
+      "AWSSDK.Core/4.0.0.29": {
         "type": "package",
         "compile": {
           "lib/net8.0/AWSSDK.Core.dll": {
@@ -15,10 +15,10 @@
           }
         }
       },
-      "AWSSDK.SimpleNotificationService/4.0.2.11": {
+      "AWSSDK.SimpleNotificationService/4.0.1.3": {
         "type": "package",
         "dependencies": {
-          "AWSSDK.Core": "[4.0.3.6, 5.0.0)"
+          "AWSSDK.Core": "[4.0.0.29, 5.0.0)"
         },
         "compile": {
           "lib/net8.0/AWSSDK.SimpleNotificationService.dll": {
@@ -31,10 +31,10 @@
           }
         }
       },
-      "AWSSDK.SQS/4.0.2.9": {
+      "AWSSDK.SQS/4.0.1.5": {
         "type": "package",
         "dependencies": {
-          "AWSSDK.Core": "[4.0.3.6, 5.0.0)"
+          "AWSSDK.Core": "[4.0.0.29, 5.0.0)"
         },
         "compile": {
           "lib/net8.0/AWSSDK.SQS.dll": {
@@ -47,10 +47,10 @@
           }
         }
       },
-      "MassTransit/9.0.1": {
+      "MassTransit/8.5.5": {
         "type": "package",
         "dependencies": {
-          "MassTransit.Abstractions": "9.0.1",
+          "MassTransit.Abstractions": "8.5.5",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "8.0.0",
           "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
@@ -68,7 +68,7 @@
           }
         }
       },
-      "MassTransit.Abstractions/9.0.1": {
+      "MassTransit.Abstractions/8.5.5": {
         "type": "package",
         "compile": {
           "lib/net8.0/MassTransit.Abstractions.dll": {
@@ -81,12 +81,12 @@
           }
         }
       },
-      "MassTransit.AmazonSQS/9.0.1": {
+      "MassTransit.AmazonSQS/8.5.5": {
         "type": "package",
         "dependencies": {
-          "AWSSDK.SQS": "4.0.2.9",
-          "AWSSDK.SimpleNotificationService": "4.0.2.11",
-          "MassTransit": "9.0.1"
+          "AWSSDK.SQS": "4.0.1.5",
+          "AWSSDK.SimpleNotificationService": "4.0.1.3",
+          "MassTransit": "8.5.5"
         },
         "compile": {
           "lib/net8.0/MassTransit.AmazonSqsTransport.dll": {
@@ -807,15 +807,15 @@
     }
   },
   "libraries": {
-    "AWSSDK.Core/4.0.3.6": {
-      "sha512": "bx61NSP9bQ5BTPXGzyhS7f4d+YzIiSelsblj8JALHp5uoYKVRnoRTbWb3lyUTdzJ9UZj7Q7JiQ8sJJ5JHQ5Jrg==",
+    "AWSSDK.Core/4.0.0.29": {
+      "sha512": "iouNjeQmTRbBoP6sRM1X4dAIUmSgm6v5Q2UcQg/lHA7DwNRvf6PFN8QbaMrrPbRJXe1eCSzjodmGZFUmHGx5Tg==",
       "type": "package",
-      "path": "awssdk.core/4.0.3.6",
+      "path": "awssdk.core/4.0.0.29",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "awssdk.core.4.0.3.6.nupkg.sha512",
+        "awssdk.core.4.0.0.29.nupkg.sha512",
         "awssdk.core.nuspec",
         "images/AWSLogo.png",
         "lib/net472/AWSSDK.Core.dll",
@@ -833,17 +833,17 @@
         "tools/account-management.ps1"
       ]
     },
-    "AWSSDK.SimpleNotificationService/4.0.2.11": {
-      "sha512": "bEXCtB0BIri4IUGf/fqLFfFFmmc5PaL1eyaEJx4Q9GiSHitX0AqWkfwMjG9AEytiqJy3KD22Xg6U5CeH9uAQUg==",
+    "AWSSDK.SimpleNotificationService/4.0.1.3": {
+      "sha512": "sk4TJViUPpRVg4YkzUjX4gafZXWsef5PGtLes6XcC6/wu6ArajcT+Z8jcOcE6lLlHJ6fyJHELztSAdJWz4aitA==",
       "type": "package",
-      "path": "awssdk.simplenotificationservice/4.0.2.11",
+      "path": "awssdk.simplenotificationservice/4.0.1.3",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "analyzers/dotnet/cs/AWSSDK.SimpleNotificationService.CodeAnalysis.dll",
         "analyzers/dotnet/cs/SharedAnalysisCode.dll",
-        "awssdk.simplenotificationservice.4.0.2.11.nupkg.sha512",
+        "awssdk.simplenotificationservice.4.0.1.3.nupkg.sha512",
         "awssdk.simplenotificationservice.nuspec",
         "images/AWSLogo.png",
         "lib/net472/AWSSDK.SimpleNotificationService.dll",
@@ -862,17 +862,17 @@
         "tools/uninstall.ps1"
       ]
     },
-    "AWSSDK.SQS/4.0.2.9": {
-      "sha512": "zaty/MRnBb4dp/LOC1kN+jesxu/IHAckCk1NBghJRDO/JMuyzOG6G1kNX4f1k1og/PlxQDSNIBYSqy5tjHycEA==",
+    "AWSSDK.SQS/4.0.1.5": {
+      "sha512": "bBGF6/ljEy1AGYHBXnrHF5Ci6JGHrRT6/U4VORlC+HdXwxyqJM1bbuBJICMZ9VrWu8Vgh+rW7SjwL+iYvB1KXQ==",
       "type": "package",
-      "path": "awssdk.sqs/4.0.2.9",
+      "path": "awssdk.sqs/4.0.1.5",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "analyzers/dotnet/cs/AWSSDK.SQS.CodeAnalysis.dll",
         "analyzers/dotnet/cs/SharedAnalysisCode.dll",
-        "awssdk.sqs.4.0.2.9.nupkg.sha512",
+        "awssdk.sqs.4.0.1.5.nupkg.sha512",
         "awssdk.sqs.nuspec",
         "images/AWSLogo.png",
         "lib/net472/AWSSDK.SQS.dll",
@@ -891,16 +891,14 @@
         "tools/uninstall.ps1"
       ]
     },
-    "MassTransit/9.0.1": {
-      "sha512": "wYMV/TX9AQqG9ybG7i97Et2rjPgIYXmYr3RV5k7ogr/BvPnAF8ohcmeESoTYSgQFWDi2lurKx57uPg1MJ9R0jw==",
+    "MassTransit/8.5.5": {
+      "sha512": "bSg8k5q+rP1s+dIGXLLbctqDGdIkfDjdxwNWtCUH7xNCN9ZuM7mqSPQPIFgaYIi34e81m4FqAqo4CAHuWPkhRA==",
       "type": "package",
-      "path": "masstransit/9.0.1",
+      "path": "masstransit/8.5.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "NuGet.README.md",
-        "lib/net10.0/MassTransit.dll",
-        "lib/net10.0/MassTransit.xml",
         "lib/net472/MassTransit.dll",
         "lib/net472/MassTransit.xml",
         "lib/net8.0/MassTransit.dll",
@@ -909,21 +907,19 @@
         "lib/net9.0/MassTransit.xml",
         "lib/netstandard2.0/MassTransit.dll",
         "lib/netstandard2.0/MassTransit.xml",
-        "masstransit.9.0.1.nupkg.sha512",
+        "masstransit.8.5.5.nupkg.sha512",
         "masstransit.nuspec",
         "mt-logo-small.png"
       ]
     },
-    "MassTransit.Abstractions/9.0.1": {
-      "sha512": "Rh3Bj/8VOdaUat2Zepbe1cfqQ+20Pqd9zoUme8w50qXISZ9p6yuxBXNNBazS16TN6Kfd4FLxuMUtjY928Rxqdw==",
+    "MassTransit.Abstractions/8.5.5": {
+      "sha512": "0mn2Ay17dD6z5tgSLjbVRlldSbL9iowzFEfVgVfBXVG5ttz9dSWeR4TrdD6pqH93GWXp4CvSmF8i1HqxLX7DZw==",
       "type": "package",
-      "path": "masstransit.abstractions/9.0.1",
+      "path": "masstransit.abstractions/8.5.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "NuGet.README.md",
-        "lib/net10.0/MassTransit.Abstractions.dll",
-        "lib/net10.0/MassTransit.Abstractions.xml",
         "lib/net472/MassTransit.Abstractions.dll",
         "lib/net472/MassTransit.Abstractions.xml",
         "lib/net8.0/MassTransit.Abstractions.dll",
@@ -932,21 +928,19 @@
         "lib/net9.0/MassTransit.Abstractions.xml",
         "lib/netstandard2.0/MassTransit.Abstractions.dll",
         "lib/netstandard2.0/MassTransit.Abstractions.xml",
-        "masstransit.abstractions.9.0.1.nupkg.sha512",
+        "masstransit.abstractions.8.5.5.nupkg.sha512",
         "masstransit.abstractions.nuspec",
         "mt-logo-small.png"
       ]
     },
-    "MassTransit.AmazonSQS/9.0.1": {
-      "sha512": "mQb+8odj5YLi8lIbr0cEB8NU/L2VXNnp+aeAwEM6nveYEkYYA9K7uRBhODepigbQ7JHAioEFhNd4znSh2M9PmQ==",
+    "MassTransit.AmazonSQS/8.5.5": {
+      "sha512": "yYzGCphh2omxpS12yH0flpEL7gelCOB04gnHwRzLM2cCdQH9pQJXfIoeNEoFMfPbsJNml4mlXXZAm7tL7Iq09Q==",
       "type": "package",
-      "path": "masstransit.amazonsqs/9.0.1",
+      "path": "masstransit.amazonsqs/8.5.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "NuGet.README.md",
-        "lib/net10.0/MassTransit.AmazonSqsTransport.dll",
-        "lib/net10.0/MassTransit.AmazonSqsTransport.xml",
         "lib/net472/MassTransit.AmazonSqsTransport.dll",
         "lib/net472/MassTransit.AmazonSqsTransport.xml",
         "lib/net8.0/MassTransit.AmazonSqsTransport.dll",
@@ -955,7 +949,7 @@
         "lib/net9.0/MassTransit.AmazonSqsTransport.xml",
         "lib/netstandard2.0/MassTransit.AmazonSqsTransport.dll",
         "lib/netstandard2.0/MassTransit.AmazonSqsTransport.xml",
-        "masstransit.amazonsqs.9.0.1.nupkg.sha512",
+        "masstransit.amazonsqs.8.5.5.nupkg.sha512",
         "masstransit.amazonsqs.nuspec",
         "mt-logo-small.png"
       ]
@@ -2073,8 +2067,8 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "FlashBank.Shared >= 1.0.0",
-      "MassTransit >= 9.0.1",
-      "MassTransit.AmazonSQS >= 9.0.1",
+      "MassTransit >= 8.5.5",
+      "MassTransit.AmazonSQS >= 8.5.5",
       "Microsoft.Extensions.Hosting >= 8.0.0"
     ]
   },
@@ -2113,6 +2107,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -2121,11 +2120,11 @@
         "dependencies": {
           "MassTransit": {
             "target": "Package",
-            "version": "[9.0.1, )"
+            "version": "[8.5.5, )"
           },
           "MassTransit.AmazonSQS": {
             "target": "Package",
-            "version": "[9.0.1, )"
+            "version": "[8.5.5, )"
           },
           "Microsoft.Extensions.Hosting": {
             "target": "Package",

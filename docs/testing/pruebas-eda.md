@@ -2,6 +2,10 @@
 
 Los scripts viven en [`scripts/`](../../scripts/README.md). La carpeta [`init/`](../../init/) es **solo** para arranque de infraestructura (SQL, seeds, hook de LocalStack en Docker).
 
+## MassTransit: versión y licencia
+
+El proyecto usa **MassTransit 8.5.5** (junto con `MassTransit.AmazonSQS` 8.5.5). **MassTransit 9+** exige licencia comercial (`MT_LICENSE` / `SetLicense`). La rama **8.x** sigue siendo de uso gratuito para desarrollo y encaja con .NET 8.
+
 ---
 
 ## Qué hace tu `curl` a `POST /transaction`

@@ -32,6 +32,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -89,6 +94,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -97,11 +107,11 @@
           "dependencies": {
             "MassTransit": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[8.5.5, )"
             },
             "MassTransit.AmazonSQS": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[8.5.5, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
