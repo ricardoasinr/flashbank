@@ -42,7 +42,7 @@ Solución **.NET 8** con varios servicios (transacciones, cuentas, historial) y 
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download)
 - [Docker](https://docs.docker.com/get-docker/) y Docker Compose
-- (Opcional, para scripts SQS desde el host) [AWS CLI](https://aws.amazon.com/cli/) y [`jq`](https://jqlang.github.io/jq/)
+- (Opcional) [AWS CLI](https://aws.amazon.com/cli/) y [`jq`](https://jqlang.github.io/jq/) — solo si quieres ejecutar los scripts de [`scripts/`](scripts/README.md) en tu máquina contra LocalStack (listar colas SQS, inspeccionar mensajes). `jq` sirve para leer el JSON que devuelve `aws`.
 
 ### 2. Clonar el repositorio y situarse en la raíz
 
@@ -167,8 +167,6 @@ El repo usa **MassTransit 8.x** (p. ej. 8.5.5 con `MassTransit.AmazonSQS`). Las 
 ### Diagrama de arquitectura
 
 ![Diagrama de arquitectura FlashBank](diagrama.jpeg)
-
-*(Si la imagen no se ve, coloca el archivo `diagrama.jpeg` en la raíz del repositorio, junto a este README.)*
 
 ---
 
