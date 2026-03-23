@@ -2,6 +2,38 @@
 
 Solución **.NET 8** con varios servicios (transacciones, cuentas, historial) y mensajería **MassTransit** sobre **Amazon SQS/SNS** vía **LocalStack** en desarrollo.
 
+## Índice
+
+- [Guía de arranque (paso a paso)](#guía-de-arranque-paso-a-paso)
+  - [1. Prerrequisitos](#1-prerrequisitos)
+  - [2. Clonar el repositorio y situarse en la raíz](#2-clonar-el-repositorio-y-situarse-en-la-raíz)
+  - [3. Variables de entorno e infraestructura Docker](#3-variables-de-entorno-e-infraestructura-docker)
+  - [4. Alinear configuración .NET con los puertos del compose](#4-alinear-configuración-net-con-los-puertos-del-compose)
+  - [5. Restaurar dependencias y ejecutar los servicios](#5-restaurar-dependencias-y-ejecutar-los-servicios)
+  - [6. Probar el flujo con `curl`](#6-probar-el-flujo-con-curl)
+  - [7. Si algo falla](#7-si-algo-falla)
+  - [8. Documentación y scripts útiles](#8-documentación-y-scripts-útiles)
+  - [MassTransit](#masstransit)
+- [FlashBank — Decisiones técnicas y arquitectura de solución](#flashbank--decisiones-técnicas-y-arquitectura-de-solución)
+  - [Diagrama de arquitectura](#diagrama-de-arquitectura)
+  - [Contexto del problema](#contexto-del-problema)
+  - [1. Arquitectura de microservicios — desacoplamiento entre servicios](#1-arquitectura-de-microservicios--desacoplamiento-entre-servicios)
+    - [El problema del acoplamiento](#el-problema-del-acoplamiento)
+    - [La solución implementada: mensajería asíncrona vía SQS/SNS con MassTransit](#la-solución-implementada-mensajería-asíncrona-vía-sqssns-con-masstransit)
+    - [Resultado](#resultado)
+  - [2. Optimización de lectura — el modelo CQRS con MongoDB](#2-optimización-de-lectura--el-modelo-cqrs-con-mongodb)
+    - [El problema](#el-problema)
+    - [La solución implementada: read model en MongoDB (CQRS)](#la-solución-implementada-read-model-en-mongodb-cqrs)
+    - [Por qué MongoDB y no PostgreSQL para lectura](#por-qué-mongodb-y-no-postgresql-para-lectura)
+    - [Flujo de escritura al historial](#flujo-de-escritura-al-historial)
+  - [3. Consistencia de datos en entornos distribuidos](#3-consistencia-de-datos-en-entornos-distribuidos)
+    - [El problema](#el-problema-1)
+    - [La solución implementada: compensación por eventos con garantía de entrega](#la-solución-implementada-compensación-por-eventos-con-garantía-de-entrega)
+    - [Resumen del contrato de consistencia](#resumen-del-contrato-de-consistencia)
+  - [Componentes del repositorio](#componentes-del-repositorio)
+  - [Infraestructura (Docker Compose)](#infraestructura-docker-compose)
+  - [Referencias](#referencias)
+
 ---
 
 ## Guía de arranque (paso a paso)
