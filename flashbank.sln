@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashBank.Transactions", "FlashBank.Transactions\FlashBank.Transactions.csproj", "{F6D79158-8F4D-4353-B487-B38CC508B7F2}"
@@ -10,10 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashBank.History", "FlashBank.History\FlashBank.History.csproj", "{1D5B516C-240F-4673-B617-BA0E47DAE984}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashBank.Shared", "FlashBank.Shared\FlashBank.Shared.csproj", "{F4846DD8-D82E-4669-8B55-F502EBB66DEE}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{398367D9-BC7E-45B6-90FF-909826CB0BBD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashBank.SimulateTransactionUpdate", "tools\FlashBank.SimulateTransactionUpdate\FlashBank.SimulateTransactionUpdate.csproj", "{C79753C0-30E2-4E30-ABA5-7C3FBFEACC3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,12 +37,5 @@ Global
 		{F4846DD8-D82E-4669-8B55-F502EBB66DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4846DD8-D82E-4669-8B55-F502EBB66DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4846DD8-D82E-4669-8B55-F502EBB66DEE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C79753C0-30E2-4E30-ABA5-7C3FBFEACC3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C79753C0-30E2-4E30-ABA5-7C3FBFEACC3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C79753C0-30E2-4E30-ABA5-7C3FBFEACC3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C79753C0-30E2-4E30-ABA5-7C3FBFEACC3E}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C79753C0-30E2-4E30-ABA5-7C3FBFEACC3E} = {398367D9-BC7E-45B6-90FF-909826CB0BBD}
 	EndGlobalSection
 EndGlobal

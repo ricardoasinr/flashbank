@@ -5,7 +5,6 @@
 | `list-sqs-queues.sh` | Listar nombres/URLs de colas en LocalStack |
 | `sqs-show-messages.sh` | **Ver mensajes** de una cola o de **todas** (`--all`), solo el payload JSON |
 | `sqs-watch-messages.sh` | Bucle: ir mostrando mensajes de una cola (long polling) |
-| `send-transaction-update.sh` | Simular `TransactionUpdate` vía MassTransit |
 
 Ejecutar **desde la raíz del repositorio** `flashbank/`:
 
@@ -31,4 +30,4 @@ chmod +x scripts/*.sh   # solo la primera vez
 
 Variables opcionales: `LOCALSTACK_ENDPOINT`, `SQS_WAIT_SECONDS`, `SQS_VISIBILITY_TIMEOUT`, `SQS_MAX_MESSAGES`.
 
-La guía EDA está en [docs/testing/pruebas-eda.md](../docs/testing/pruebas-eda.md).
+Flujo HTTP y eventos (curl, workers): [README principal](../README.md). SQS solo con Docker: [docs/testing/sqs-desde-docker.md](../docs/testing/sqs-desde-docker.md).

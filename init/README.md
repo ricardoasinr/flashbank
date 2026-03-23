@@ -10,4 +10,4 @@ Aquí van **solo** los artefactos que usa el entorno al levantar contenedores o 
 | `run-mongo-seed.sh` | Ejecutar seed manualmente |
 | `init-aws.sh` | Crea colas SQS en LocalStack (hook `ready.d`) |
 
-**Pruebas manuales del flujo EDA** (curl, scripts SQS, simulador): ver [`docs/testing/pruebas-eda.md`](../docs/testing/pruebas-eda.md) y [`scripts/`](../scripts/README.md).
+**Probar el flujo** (curl, workers, scripts SQS): [`README.md`](../README.md) y [`scripts/README.md`](../scripts/README.md).
