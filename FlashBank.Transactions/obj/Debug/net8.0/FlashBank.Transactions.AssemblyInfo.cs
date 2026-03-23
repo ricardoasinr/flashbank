@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FlashBank.Transactions")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da6603bd075de4c6b5fe78a1abf023b98948a540")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d02c70f21a4e15c8b6278277546a02f45834c3a9")]
 [assembly: System.Reflection.AssemblyProductAttribute("FlashBank.Transactions")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FlashBank.Transactions")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

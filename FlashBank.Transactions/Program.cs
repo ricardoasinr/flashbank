@@ -54,11 +54,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// POST /transactions
-app.MapPost("/transactions", async (
+static async Task<IResult> CreateTransactionHandler(
     CreateTransactionRequest request,
     ITransactionService transactionService,
-    CancellationToken ct) =>
+    CancellationToken ct)
 {
     if (request.Amount <= 0)
         return Results.BadRequest(new { error = "El monto debe ser mayor que cero." });
@@ -77,8 +76,15 @@ app.MapPost("/transactions", async (
         transaction.Status,
         transaction.CreatedAt
     });
-})
-.WithName("CreateTransaction")
-.WithOpenApi();
+}
+
+// Diagrama: POST /transaction — mismo handler que /transactions
+app.MapPost("/transaction", CreateTransactionHandler)
+    .WithName("CreateTransactionSingular")
+    .WithOpenApi();
+
+app.MapPost("/transactions", CreateTransactionHandler)
+    .WithName("CreateTransaction")
+    .WithOpenApi();
 
 app.Run();
