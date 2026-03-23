@@ -1,0 +1,29 @@
+# Build output
+bin/
+obj/
+
+# .NET user secrets and local settings
+*.user
+*.suo
+.vs/
+.idea/
+
+# Environment files (contienen secretos)
+.env
+.env.local
+.env.*.local
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+
+# Rider / JetBrains
+.idea/
+
+# macOS
+.DS_Store
+
+# Test results
+TestResults/
+coverage/

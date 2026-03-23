@@ -1,13 +1,39 @@
+using Amazon.SimpleNotificationService;
+using Amazon.SQS;
+using FlashBank.Transactions.Consumers;
+using MassTransit;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var awsSection = builder.Configuration.GetSection("AWS");
+var serviceUrl  = awsSection["ServiceURL"] ?? "http://localhost:4566";
+var accessKey   = awsSection["AccessKey"]  ?? "test";
+var secretKey   = awsSection["SecretKey"]  ?? "test";
+var region      = awsSection["Region"]     ?? "us-east-1";
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<TransactionConsumer>();
+
+    x.UsingAmazonSqs((ctx, cfg) =>
+    {
+        cfg.Host(region, h =>
+        {
+            h.AccessKey(accessKey);
+            h.SecretKey(secretKey);
+            h.Config(new AmazonSQSConfig { ServiceURL = serviceUrl });
+            h.Config(new AmazonSimpleNotificationServiceConfig { ServiceURL = serviceUrl });
+        });
+
+        cfg.ConfigureEndpoints(ctx);
+    });
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -16,29 +42,4 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
-
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
